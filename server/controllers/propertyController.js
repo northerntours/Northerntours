@@ -56,34 +56,7 @@ const getPropertyById = async (req, res) => {
       return res.status(404).json({ message: 'Property not found' });
     }
 
-    // Dynamically fetch all booked dates from Bookings collection (Pending, Confirmed, etc.)
-    const Booking = require('../models/Booking');
-    const activeBookings = await Booking.find({
-      propertyId: req.params.id,
-      status: { $nin: ['Cancelled'] }
-    }).select('startDate endDate');
-
-    const dynamicBookedDates = [];
-    activeBookings.forEach(booking => {
-      let tempDate = new Date(booking.startDate);
-      const end = new Date(booking.endDate);
-      while (tempDate < end) {
-        dynamicBookedDates.push(new Date(tempDate));
-        tempDate.setDate(tempDate.getDate() + 1);
-      }
-    });
-
-    // Merge manual property.bookedDates with dynamic ones for backward compatibility
-    const allBookedDates = [...new Set([
-      ...property.bookedDates.map(d => d.toISOString()),
-      ...dynamicBookedDates.map(d => d.toISOString())
-    ])].map(d => new Date(d));
-    
-    // Return property with accurate booked dates
-    const propertyObj = property.toObject();
-    propertyObj.bookedDates = allBookedDates;
-
-    res.json(propertyObj);
+    res.json(property);
   } catch (error) {
     res.status(500).json({ message: error.message });
   }
@@ -216,7 +189,7 @@ const getPropertyAvailability = async (req, res) => {
       return res.status(404).json({ message: 'Property not found' });
     }
     
-    res.json({ bookedDates: property.bookedDates });
+    res.json({ bookedDates: [] });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

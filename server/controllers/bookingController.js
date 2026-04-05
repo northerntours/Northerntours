@@ -64,17 +64,6 @@ const createBooking = async (req, res) => {
     
     const createdBooking = await booking.save();
     
-    // Add booked dates to property for all bookings (Pending or Confirmed)
-    // This ensures they show as "crossed out" on the calendar immediately
-    const requestedDates = [];
-    let tempDate = new Date(start);
-    while (tempDate < end) {
-      requestedDates.push(new Date(tempDate));
-      tempDate.setDate(tempDate.getDate() + 1);
-    }
-    property.bookedDates.push(...requestedDates);
-    await property.save();
-    
     res.status(201).json(createdBooking);
   } catch (error) {
     res.status(400).json({ message: error.message });
@@ -118,27 +107,6 @@ const updateBookingStatus = async (req, res) => {
       return res.status(404).json({ message: 'Booking not found' });
     }
     
-    // If cancelling, remove booked dates from property
-    if (status === 'Cancelled' && booking.status !== 'Cancelled') {
-      const property = await Property.findById(booking.propertyId);
-      if (property) {
-        const start = new Date(booking.startDate);
-        const end = new Date(booking.endDate);
-        const datesToRemove = [];
-        
-        const tempStart = new Date(start);
-        while (tempStart < end) {
-          datesToRemove.push(tempStart.toISOString().split('T')[0]);
-          tempStart.setDate(tempStart.getDate() + 1);
-        }
-        
-        property.bookedDates = property.bookedDates.filter(date => 
-          !datesToRemove.includes(new Date(date).toISOString().split('T')[0])
-        );
-        await property.save();
-      }
-    }
-    
     booking.status = status;
     
     // Set operational timestamps
@@ -173,25 +141,6 @@ const cancelBooking = async (req, res) => {
     }
     
 
-    
-    // Remove booked dates from property
-    const property = await Property.findById(booking.propertyId);
-    if (property) {
-      const start = new Date(booking.startDate);
-      const end = new Date(booking.endDate);
-      const datesToRemove = [];
-      
-      const tempStart = new Date(start);
-      while (tempStart < end) {
-        datesToRemove.push(tempStart.toISOString().split('T')[0]);
-        tempStart.setDate(tempStart.getDate() + 1);
-      }
-      
-      property.bookedDates = property.bookedDates.filter(date => 
-        !datesToRemove.includes(new Date(date).toISOString().split('T')[0])
-      );
-      await property.save();
-    }
     
     booking.status = 'Cancelled';
     const updatedBooking = await booking.save();
@@ -260,28 +209,7 @@ const updateBooking = async (req, res) => {
         return res.status(400).json({ message: 'Selected dates are not available for this property' });
       }
 
-      // 2. Remove old dates from old property if it was Confirmed
-      if (booking.status === 'Confirmed' || isAdmin) {
-        const oldProperty = await Property.findById(oldPropertyId);
-        if (oldProperty) {
-          const oldStart = new Date(booking.startDate);
-          const oldEnd = new Date(booking.endDate);
-          const oldDatesToRemove = [];
-          
-          let tempDate = new Date(oldStart);
-          while (tempDate < oldEnd) {
-            oldDatesToRemove.push(new Date(tempDate).toISOString());
-            tempDate.setDate(tempDate.getDate() + 1);
-          }
-          
-          oldProperty.bookedDates = oldProperty.bookedDates.filter(date =>
-            !oldDatesToRemove.includes(new Date(date).toISOString())
-          );
-          await oldProperty.save();
-        }
-      }
-
-      // 3. Update booking dates and amount
+      // 2. Update booking dates and amount
       const nights = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
       const newProperty = await Property.findById(newPropertyId);
       if (!newProperty) return res.status(404).json({ message: 'Property not found' });
@@ -291,18 +219,6 @@ const updateBooking = async (req, res) => {
       booking.startDate = start;
       booking.endDate = end;
       booking.propertyId = newPropertyId;
-
-      // 4. Add new dates to property IF it remains active
-      if (booking.status !== 'Cancelled') {
-        const requestedDates = [];
-        let tempDate = new Date(start);
-        while (tempDate < end) {
-          requestedDates.push(new Date(tempDate));
-          tempDate.setDate(tempDate.getDate() + 1);
-        }
-        newProperty.bookedDates.push(...requestedDates);
-        await newProperty.save();
-      }
     }
 
     // Update other fields
@@ -354,25 +270,6 @@ const deleteBooking = async (req, res) => {
     const booking = await Booking.findById(req.params.id);
     if (!booking) {
       return res.status(404).json({ message: 'Booking not found' });
-    }
-
-    // 1. Remove booked dates from property
-    const property = await Property.findById(booking.propertyId);
-    if (property) {
-      const start = new Date(booking.startDate);
-      const end = new Date(booking.endDate);
-      const datesToRemove = [];
-      
-      const tempStart = new Date(start);
-      while (tempStart < end) {
-        datesToRemove.push(tempStart.toISOString());
-        tempStart.setDate(tempStart.getDate() + 1);
-      }
-      
-      property.bookedDates = property.bookedDates.filter(date => 
-        !datesToRemove.includes(new Date(date).toISOString())
-      );
-      await property.save();
     }
 
     // 2. Delete the booking

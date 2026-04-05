@@ -34,14 +34,13 @@ const PropertyDetail = () => {
   const [startDate, setStartDate] = useState(null);
   const [endDate, setEndDate] = useState(null);
   const [bookingLoading, setBookingLoading] = useState(false);
-  const [bookedDates, setBookedDates] = useState([]);
   
   // FORM STATES (Precise from image)
   const [guestName, setGuestName] = useState('');
   const [guestPhone, setGuestPhone] = useState('');
   const [guestEmail, setGuestEmail] = useState('');
-  const [totalGuests, setTotalGuests] = useState(1);
-  const [totalRooms, setTotalRooms] = useState(1);
+  const [totalGuests, setTotalGuests] = useState('1');
+  const [totalRooms, setTotalRooms] = useState('1');
   
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [lightboxOpen, setLightboxOpen] = useState(false);
@@ -54,7 +53,6 @@ const PropertyDetail = () => {
     try {
       const response = await propertyAPI.getById(id);
       setProperty(response.data);
-      setBookedDates(response.data.bookedDates || []);
     } catch (err) {
       setError('Property details failed to load');
     } finally { setLoading(false); }
@@ -63,6 +61,13 @@ const PropertyDetail = () => {
   const handleBookNow = async () => {
     if (!guestName.trim() || !guestPhone.trim() || !guestEmail.trim()) { toast.error('Please fill all form fields'); return; }
     if (!startDate || !endDate) { toast.error('Select your stay dates'); return; }
+    
+    const roomsCount = parseInt(totalRooms);
+    const guestsCount = parseInt(totalGuests);
+    
+    if (isNaN(roomsCount) || roomsCount < 1) { toast.error('Number of rooms must be at least 1'); return; }
+    if (isNaN(guestsCount) || guestsCount < 1) { toast.error('Total guests must be at least 1'); return; }
+
     setBookingLoading(true);
     try {
       await bookingAPI.create({ 
@@ -72,18 +77,24 @@ const PropertyDetail = () => {
         guestName, 
         guestEmail, 
         guestPhone, 
-        totalGuests, 
-        rooms: totalRooms 
+        totalGuests: guestsCount, 
+        rooms: roomsCount 
       });
       toast.success('Inquiry sent successfully!');
       setShowBookingModal(false);
-      navigate('/');
+      // Reset form
+      setStartDate(null);
+      setEndDate(null);
+      setGuestName('');
+      setGuestEmail('');
+      setGuestPhone('');
+      setTotalGuests('1');
+      setTotalRooms('1');
     } catch (err) { 
       toast.error(err.response?.data?.message || 'Booking failed'); 
     } finally { setBookingLoading(false); }
   };
 
-  const isDateBooked = (date) => bookedDates.some(bd => new Date(bd).toDateString() === date.toDateString());
   const isPastDate = (date) => { const today = new Date(); today.setHours(0,0,0,0); return date < today; };
 
   if (loading) return <div className="min-h-screen bg-gray-50 flex items-center justify-center pt-24 font-sans"><div className="animate-spin h-10 w-10 border-4 border-primary-500 border-t-transparent rounded-full" /></div>;
@@ -187,15 +198,15 @@ const PropertyDetail = () => {
              {/* Host Informantion */}
              <div className="bg-white rounded-3xl p-6 flex flex-col md:flex-row items-center gap-6 border border-gray-50 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-500">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-100 flex-shrink-0">
-                  <img src={`https://ui-avatars.com/api/?name=${property.ownerName || 'Host'}&background=4f46e5&color=fff&bold=true`} alt="Host" className="w-full h-full object-cover" />
+                  <img src={`${property.ownerImage || 'https://ui-avatars.com/api/?name=${property.ownerName}&background=4f46e5&color=fff&bold=true'}`} alt="Host" className="w-full h-full object-cover" />
                 </div>
                 <div className="text-center md:text-left flex-1">
                   <h4 className="text-lg font-bold text-gray-950 mb-0.5">{property.ownerName || 'Verified Host'}</h4>
                   <p className="text-gray-500 text-[11px] italic font-medium">"Ready to facilitate your Himalayan escape."</p>
                 </div>
                 <div className="flex gap-3">
-                     <a href={`tel:${property.ownerPhone}`} className="px-5 py-2.5 bg-gray-50 text-gray-950 rounded-lg font-bold uppercase text-[9px] tracking-widest border border-gray-100">Call</a>
-                     <button onClick={() => window.open(`https://wa.me/${property.ownerPhone?.replace(/\D/g,'')}`, '_blank')} className="px-5 py-2.5 bg-primary-600 text-white rounded-lg font-bold uppercase text-[9px] tracking-widest shadow-sm">WhatsApp</button>
+                     <a href={`tel:+91${property.ownerContact}`} className="px-5 py-2.5 bg-gray-50 text-gray-950 rounded-lg font-bold uppercase text-[9px] tracking-widest border border-gray-100">Call</a>
+                     <button onClick={() => window.open(`https://wa.me/+91${property.ownerWhatsApp?.replace(/\D/g,'')}`, '_blank')} className="px-5 py-2.5 bg-primary-600 text-white rounded-lg font-bold uppercase text-[9px] tracking-widest shadow-sm">WhatsApp</button>
                 </div>
              </div>
           </div>
@@ -211,10 +222,7 @@ const PropertyDetail = () => {
                            mode="range" 
                            selected={{ from: startDate, to: endDate }} 
                            onSelect={(r) => { setStartDate(r?.from); setEndDate(r?.to); }}
-                           disabled={isPastDate}
                            className="mx-auto"
-                           modifiers={{ booked: isDateBooked }}
-                           modifiersClassNames={{ booked: 'booked-date-crossed' }}
                          />
                       </div>
                    </div>
@@ -223,7 +231,7 @@ const PropertyDetail = () => {
                     onClick={() => setShowBookingModal(true)}
                     className="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white rounded-xl font-bold uppercase tracking-[0.15em] text-[11px] shadow-lg active:scale-95 flex items-center justify-center transition-all"
                    >
-                     Initiate Booking
+                     Book Now
                    </button>
                    
                    <div className="flex gap-4 p-4 bg-emerald-50 rounded-xl border border-emerald-100">
@@ -275,7 +283,7 @@ const PropertyDetail = () => {
                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 border-r border-gray-200 pr-2">
                                <UserIcon className="w-3.5 h-3.5" />
                             </div>
-                            <input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="Shiv Sagar" className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none" />
+                            <input value={guestName} onChange={(e) => setGuestName(e.target.value)} placeholder="Your Full Name" className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none" />
                          </div>
                       </div>
 
@@ -298,7 +306,7 @@ const PropertyDetail = () => {
                             <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 border-r border-gray-200 pr-2">
                                <EnvelopeIcon className="w-3.5 h-3.5" />
                             </div>
-                            <input value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} placeholder="guest@gmail.com" className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none" />
+                            <input value={guestEmail} onChange={(e) => setGuestEmail(e.target.value)} placeholder="youremail@gmail.com" className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none" />
                          </div>
                       </div>
 
@@ -344,7 +352,7 @@ const PropertyDetail = () => {
                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 border-r border-gray-200 pr-2">
                                   <BuildingOfficeIcon className="w-3.5 h-3.5" />
                                </div>
-                               <input type="number" min="1" value={totalRooms} onChange={(e) => setTotalRooms(parseInt(e.target.value) || 1)} className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold text-gray-950 outline-none" />
+                               <input type="text" value={totalRooms} onChange={(e) => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setTotalRooms(val); }} className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold text-gray-950 outline-none" />
                             </div>
                          </div>
                          <div className="space-y-1">
@@ -353,7 +361,7 @@ const PropertyDetail = () => {
                                <div className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400 border-r border-gray-200 pr-2">
                                   <UsersIcon className="w-3.5 h-3.5" />
                                </div>
-                               <input type="number" min="1" value={totalGuests} onChange={(e) => setTotalGuests(parseInt(e.target.value) || 1)} className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold text-gray-950 outline-none" />
+                               <input type="text" value={totalGuests} onChange={(e) => { const val = e.target.value; if (val === '' || /^\d+$/.test(val)) setTotalGuests(val); }} className="w-full bg-white border border-gray-200 pl-11 py-2.5 rounded-lg text-sm font-bold text-gray-950 outline-none" />
                             </div>
                          </div>
                       </div>

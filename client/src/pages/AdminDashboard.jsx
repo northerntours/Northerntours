@@ -40,7 +40,7 @@ const AdminDashboard = () => {
   const [editingProperty, setEditingProperty] = useState(null);
 
   // Available amenities list
-  const availableAmenities = ['WiFi', 'TV', 'Kitchen', 'Parking', 'Air Conditioning', 'Heating', 'Washing Machine', 'Swimming Pool', 'Gym', 'Garden'];
+  const availableAmenities = ['Garden', 'Parking', 'Wifi', 'Barbeque', 'Kanchanjunga View', 'Meal', 'Outdoor Games', 'Kitchen', 'Bonfire', 'balcony', 'Geyser', 'Gym', 'Pet Friendly', 'Local Guide', 'TV', 'Air conditioner'];
   
   const [newBooking, setNewBooking] = useState({
     propertyId: '', guestName: '', guestEmail: '', guestPhone: '', totalGuests: 1, rooms: 1, startDate: '', endDate: ''
@@ -439,8 +439,8 @@ const AdminDashboard = () => {
             className="flex items-center gap-2 px-3 py-2 md:px-4 md:py-2 bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors text-[10px] md:text-sm font-bold uppercase tracking-wider shadow-sm border border-red-100"
           >
             <ArrowRightOnRectangleIcon className="h-4 w-4 md:h-5 md:w-5" />
-            <span className="hidden xs:inline">Logout</span>
-            <span className="xs:hidden">Out</span>
+            <span className=" xs:inline">Logout</span>
+            {/* <span className="xs:hidden">Out</span> */}
           </button>
         </motion.div>
 
@@ -805,12 +805,6 @@ const AdminDashboard = () => {
                                 })} className="p-1 hover:bg-blue-50 rounded text-primary-600" title="Edit">
                                   <PencilIcon className="h-4 w-4 md:h-5 md:w-5" />
                                 </button>
-                                <button onClick={() => handleCancelBooking(booking._id)} className="p-1 hover:bg-yellow-50 rounded text-yellow-600" title="Cancel">
-                                  <XMarkIcon className="h-4 w-4 md:h-5 md:w-5" />
-                                </button>
-                                <button onClick={() => handleDeleteBooking(booking._id)} className="p-1 hover:bg-red-50 rounded text-red-600" title="Delete">
-                                  <TrashIcon className="h-4 w-4 md:h-5 md:w-5" />
-                                </button>
                               </div>
                           </td>
                         </tr>
@@ -1088,10 +1082,6 @@ const AdminDashboard = () => {
                         const day = String(date.getDate()).padStart(2, '0');
                         return `${year}-${month}-${day}`;
                       };
-                      // Block selection of booked dates
-                      const selectedPropCheck = properties.find(p => p._id === newBooking.propertyId);
-                      const isBooked = (d) => selectedPropCheck?.bookedDates?.some(bd => new Date(bd).toDateString() === d?.toDateString());
-                      if (isBooked(range?.from) || isBooked(range?.to)) return;
                       setNewBooking({
                         ...newBooking,
                         startDate: formatDateLocal(range?.from),
@@ -1103,14 +1093,6 @@ const AdminDashboard = () => {
                       today.setHours(0,0,0,0);
                       return date < today; // Only disable past dates, NOT booked dates
                     }}
-                    modifiers={{ 
-                      booked: (date) => {
-                        const selectedProp = properties.find(p => p._id === newBooking.propertyId);
-                        if (!selectedProp) return false;
-                        return selectedProp.bookedDates?.some(d => new Date(d).toDateString() === date.toDateString());
-                      }
-                    }}
-                    modifiersClassNames={{ booked: 'booked-date-crossed' }}
                     className="mx-auto"
                   />
                 </div>

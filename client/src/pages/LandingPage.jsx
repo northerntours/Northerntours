@@ -210,7 +210,7 @@ const LandingPage = () => {
       </section>
 
       {/* ===== FEATURED CATEGORIES ===== */}
-      <section className="py-24 md:py-32 overflow-hidden">
+      {/* <section className="py-24 md:py-32 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4">
           <div className="flex flex-col md:flex-row md:items-end justify-between mb-12 md:mb-16 gap-6">
             <div className="max-w-xl text-center md:text-left">
@@ -246,7 +246,7 @@ const LandingPage = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ===== FEATURED PROPERTIES ===== */}
       {!loading && featuredProperties.length > 0 && (
@@ -257,7 +257,7 @@ const LandingPage = () => {
               <h2 className="text-3xl md:text-7xl font-black text-gray-950 tracking-tighter uppercase italic leading-none">FEATURED STAYS</h2>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
               {featuredProperties.map((prop, idx) => (
                 <motion.div
                   key={prop._id}

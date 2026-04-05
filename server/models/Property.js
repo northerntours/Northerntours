@@ -28,9 +28,6 @@ const propertySchema = new mongoose.Schema({
     type: String,
     trim: true
   }],
-  bookedDates: [{
-    type: Date
-  }],
   owner: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',

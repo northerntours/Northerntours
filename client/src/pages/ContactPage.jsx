@@ -129,34 +129,34 @@ const ContactPage = () => {
              <form onSubmit={handleSubmit} className="space-y-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Full Identity</label>
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Full Name</label>
                     <input 
                       name="name" value={form.name} onChange={handleChange}
-                      placeholder="e.g. Shiv Sagar" 
+                      placeholder="e.g. Ram Bhujel" 
                       className="w-full bg-gray-50 border-none px-6 py-5 rounded-2xl text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none focus:bg-white"
                     />
                   </div>
                   <div className="space-y-4">
-                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Direct Connectivity</label>
+                    <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Mobile Number</label>
                     <input 
                       name="phone" value={form.phone} onChange={handleChange}
-                      placeholder="+91 ...." 
+                      placeholder="+91 1234...." 
                       className="w-full bg-gray-50 border-none px-6 py-5 rounded-2xl text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none focus:bg-white"
                     />
                   </div>
                 </div>
 
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Inquiry Channel (Email)</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Eamil Address</label>
                   <input 
                     name="email" value={form.email} onChange={handleChange}
-                    placeholder="hello@peak.com" 
+                    placeholder="eg. rambhujel@gmail.com" 
                     className="w-full bg-gray-50 border-none px-6 py-5 rounded-2xl text-sm font-bold focus:ring-1 focus:ring-primary-500 transition-all outline-none focus:bg-white"
                   />
                 </div>
 
                 <div className="space-y-4">
-                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Your Journey Narrative</label>
+                  <label className="text-[10px] font-black text-gray-400 uppercase tracking-[0.3em] italic">Your Inquiry/Message</label>
                   <textarea 
                     name="message" value={form.message} onChange={handleChange} rows={5}
                     placeholder="Tell us about the peaks you wish to explore..." 

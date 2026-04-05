@@ -61,8 +61,8 @@ const bookingSchema = new mongoose.Schema({
   },
   bookedBy: {
     type: String,
-    enum: ['User', 'Admin'],
-    default: 'User'
+    enum: ['User', 'Admin','Guest'],
+    default: 'Guest'
   },
   checkedInAt: {
     type: Date,

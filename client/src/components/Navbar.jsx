@@ -53,7 +53,7 @@ const Navbar = () => {
                   NORTHERN TOURS
                 </span>
                 <span className={`text-[8px] md:text-[10px] font-black uppercase tracking-[0.3em] mt-1 transition-colors ${!scrolled && location.pathname === '/' ? 'text-primary-300' : 'text-primary-600'}`}>
-                  Beyond the valleys
+                  Explore the offbeat destination
                 </span>
               </div>
             </Link>

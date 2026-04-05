@@ -59,7 +59,7 @@ const Footer = () => {
       
       <div className="max-w-7xl mx-auto px-6 sm:px-8 relative z-10">
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-16 mb-24">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-16 mb-24">
           
           {/* Brand Column */}
           <div className="space-y-8">
@@ -89,7 +89,7 @@ const Footer = () => {
           </div>
 
           {/* Explore Column */}
-          <div>
+          {/* <div>
             <h4 className="text-xs font-black uppercase tracking-[0.2em] mb-8 text-primary-400 italic">Stay Collections</h4>
             <ul className="space-y-4">
               {footerLinks.explore.map((link) => (
@@ -100,7 +100,7 @@ const Footer = () => {
                 </li>
               ))}
             </ul>
-          </div>
+          </div> */}
 
           {/* Company Column */}
           <div>
