@@ -139,11 +139,25 @@ const Footer = () => {
 
         </div>
 
-        {/* Bottom Bar */}
         <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6">
-          <p className="text-gray-500 text-[10px] uppercase font-black tracking-[0.25em] leading-none">
-            © {currentYear} Northern Tours • Developed by <a href="https://shivsagar.tech" target="_blank" rel="noopener noreferrer" className="text-primary-400 hover:text-white transition-colors cursor-pointer italic underline underline-offset-4">Shiv Sagar</a>
-          </p>
+          <div className="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+            <span className="text-gray-500 text-[11px] font-black tracking-[0.3em] uppercase">
+              © {currentYear} Northern Tours
+            </span>
+            <span className="hidden md:block w-1 h-1 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(14,165,233,0.8)]"></span>
+            <div className="flex items-center gap-3 text-gray-500 text-[10px] uppercase font-bold tracking-[0.2em]">
+               <span>Architected by</span>
+               <a 
+                href="https://shivsagar.tech" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="relative group flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary-500/50 rounded-full transition-all duration-500 overflow-hidden shadow-lg hover:shadow-primary-500/20"
+               >
+                 <span className="relative z-10 text-white font-black tracking-[0.25em] group-hover:text-primary-400 drop-shadow-md transition-colors">SHIV SAGAR</span>
+                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-500/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out"></div>
+               </a>
+            </div>
+          </div>
           <div className="flex gap-8">
              {/* Verified Portal and Safe Booking - Commented as requested */}
              {/* <span className="text-gray-500 text-[10px] font-black uppercase tracking-widest cursor-pointer hover:text-white transition-all">Verified Portal</span> */}

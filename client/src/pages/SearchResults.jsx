@@ -14,6 +14,84 @@ import {
 import { useNavigate } from 'react-router-dom';
 import useSearchStore from '../stores/searchStore';
 import { propertyAPI } from '../utils/api';
+import HeicImage from '../components/HeicImage';
+
+const allAmenities = ['Garden', 'Parking', 'Wifi', 'Barbeque', 'Kanchanjunga View', 'Meal', 'Outdoor Games', 'Kitchen', 'Bonfire', 'balcony', 'Geyser', 'Gym', 'Pet Friendly', 'Local Guide', 'TV', 'Air conditioner'];
+
+const FilterContent = ({ 
+  isMobile, 
+  priceInputs, setPriceInputs, 
+  selectedAmenities, setSelectedAmenities, 
+  setAppliedFilters, 
+  setShowMobileFilters 
+}) => (
+  <div className={`space-y-10 ${isMobile ? 'p-8' : ''}`}>
+    <div className="flex items-center justify-between">
+      <h3 className="text-xl font-bold text-gray-950">Filters</h3>
+      <button 
+        onClick={() => { setPriceInputs({minPrice:'', maxPrice:''}); setSelectedAmenities([]); setAppliedFilters({minPrice:'', maxPrice:'', amenities:[]}); }}
+        className="text-primary-600 text-[11px] font-bold uppercase tracking-widest hover:underline"
+      >
+        Reset
+      </button>
+    </div>
+
+    <div className="space-y-10">
+      {/* Price Range */}
+      <div>
+        <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-6">Price Range (INR)</h4>
+        <div className="flex items-center gap-3">
+           <input 
+            type="text" 
+            placeholder="Min"
+            value={priceInputs.minPrice}
+            onChange={(e) => setPriceInputs({...priceInputs, minPrice: e.target.value.replace(/\D/g,'')})}
+            className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-sm font-semibold focus:ring-1 focus:ring-primary-500 transition-all outline-none"
+           />
+           <span className="text-gray-300">-</span>
+           <input 
+            type="text" 
+            placeholder="Max"
+            value={priceInputs.maxPrice}
+            onChange={(e) => setPriceInputs({...priceInputs, maxPrice: e.target.value.replace(/\D/g,'')})}
+            className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-sm font-semibold focus:ring-1 focus:ring-primary-500 transition-all outline-none"
+           />
+        </div>
+      </div>
+
+      {/* Amenities */}
+      <div>
+         <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-6">Amenities</h4>
+         <div className="flex flex-wrap gap-2">
+           {allAmenities.map(amenity => (
+             <button
+              key={amenity}
+              onClick={() => setSelectedAmenities(prev => prev.includes(amenity) ? prev.filter(a => a !== amenity) : [...prev, amenity])}
+              className={`px-4 py-2.5 text-[11px] font-bold rounded-xl border transition-all flex items-center gap-2 ${
+                selectedAmenities.includes(amenity) 
+                  ? 'bg-primary-600 text-white border-primary-600 shadow-md' 
+                  : 'bg-white text-gray-600 border-gray-200 hover:border-primary-400'
+              }`}
+             >
+               {selectedAmenities.includes(amenity) && <CheckIcon className="w-3.5 h-3.5" />}
+               {amenity}
+             </button>
+           ))}
+         </div>
+      </div>
+
+      <button 
+        onClick={() => {
+          setAppliedFilters({ minPrice: priceInputs.minPrice, maxPrice: priceInputs.maxPrice, amenities: selectedAmenities });
+          if (isMobile) setShowMobileFilters(false);
+        }}
+        className="w-full py-5 bg-gray-950 hover:bg-black text-white text-[11px] font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl"
+      >
+        {isMobile ? 'Apply Filters & View Results' : 'Apply Filters'}
+      </button>
+    </div>
+  </div>
+);
 
 const SearchResults = () => {
   const navigate = useNavigate();
@@ -44,76 +122,6 @@ const SearchResults = () => {
     } catch (err) { console.error(err); } finally { setLoading(false); }
   };
 
-  const allAmenities = ['WiFi', 'TV', 'Kitchen', 'Parking', 'Air Conditioning', 'Heating', 'Washing Machine', 'Swimming Pool', 'Gym', 'Garden'];
-
-  const FilterContent = ({ isMobile }) => (
-    <div className={`space-y-10 ${isMobile ? 'p-8' : ''}`}>
-      <div className="flex items-center justify-between">
-        <h3 className="text-xl font-bold text-gray-950">Filters</h3>
-        <button 
-          onClick={() => { setPriceInputs({minPrice:'', maxPrice:''}); setSelectedAmenities([]); setAppliedFilters({minPrice:'', maxPrice:'', amenities:[]}); }}
-          className="text-primary-600 text-[11px] font-bold uppercase tracking-widest hover:underline"
-        >
-          Reset
-        </button>
-      </div>
-
-      <div className="space-y-10">
-        {/* Price Range */}
-        <div>
-          <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-6">Price Range (INR)</h4>
-          <div className="flex items-center gap-3">
-             <input 
-              type="text" 
-              placeholder="Min"
-              value={priceInputs.minPrice}
-              onChange={(e) => setPriceInputs({...priceInputs, minPrice: e.target.value.replace(/\D/g,'')})}
-              className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-sm font-semibold focus:ring-1 focus:ring-primary-500 transition-all outline-none"
-             />
-             <span className="text-gray-300">-</span>
-             <input 
-              type="text" 
-              placeholder="Max"
-              value={priceInputs.maxPrice}
-              onChange={(e) => setPriceInputs({...priceInputs, maxPrice: e.target.value.replace(/\D/g,'')})}
-              className="w-full bg-gray-50 border border-gray-200 px-4 py-3 rounded-xl text-sm font-semibold focus:ring-1 focus:ring-primary-500 transition-all outline-none"
-             />
-          </div>
-        </div>
-
-        {/* Amenities */}
-        <div>
-           <h4 className="text-[11px] font-bold uppercase tracking-widest text-gray-400 mb-6">Amenities</h4>
-           <div className="flex flex-wrap gap-2">
-             {allAmenities.map(amenity => (
-               <button
-                key={amenity}
-                onClick={() => setSelectedAmenities(prev => prev.includes(amenity) ? prev.filter(a => a !== amenity) : [...prev, amenity])}
-                className={`px-4 py-2.5 text-[11px] font-bold rounded-xl border transition-all flex items-center gap-2 ${
-                  selectedAmenities.includes(amenity) 
-                    ? 'bg-primary-600 text-white border-primary-600 shadow-md' 
-                    : 'bg-white text-gray-600 border-gray-200 hover:border-primary-400'
-                }`}
-               >
-                 {selectedAmenities.includes(amenity) && <CheckIcon className="w-3.5 h-3.5" />}
-                 {amenity}
-               </button>
-             ))}
-           </div>
-        </div>
-
-        <button 
-          onClick={() => {
-            setAppliedFilters({ minPrice: priceInputs.minPrice, maxPrice: priceInputs.maxPrice, amenities: selectedAmenities });
-            if (isMobile) setShowMobileFilters(false);
-          }}
-          className="w-full py-5 bg-gray-950 hover:bg-black text-white text-[11px] font-bold uppercase tracking-widest rounded-2xl transition-all shadow-xl"
-        >
-          {isMobile ? 'Apply Filters & View Results' : 'Apply Filters'}
-        </button>
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-white pt-20 md:pt-32 font-sans selection:bg-primary-100">
@@ -153,7 +161,15 @@ const SearchResults = () => {
           {/* ===== DESKTOP FILTERS SIDEBAR ===== */}
           <aside className="hidden lg:block w-1/4">
              <div className="sticky top-36">
-                <FilterContent isMobile={false} />
+                <FilterContent 
+                  isMobile={false} 
+                  priceInputs={priceInputs} 
+                  setPriceInputs={setPriceInputs} 
+                  selectedAmenities={selectedAmenities} 
+                  setSelectedAmenities={setSelectedAmenities} 
+                  setAppliedFilters={setAppliedFilters} 
+                  setShowMobileFilters={setShowMobileFilters} 
+                />
              </div>
           </aside>
 
@@ -193,7 +209,7 @@ const SearchResults = () => {
                         onClick={() => navigate(`/properties/${prop._id}`)}
                       >
                          <div className="relative aspect-[4/3] rounded-[2.5rem] overflow-hidden mb-8 border border-gray-50 bg-gray-50 shadow-md transition-all duration-500 group-hover:shadow-2xl group-hover:shadow-primary-500/10 group-hover:-translate-y-2 active:scale-[0.98]">
-                            <img 
+                            <HeicImage 
                               src={prop.images?.[0] || 'https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=800'} 
                               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000" 
                               alt={prop.title} 
@@ -217,6 +233,11 @@ const SearchResults = () => {
                                {prop.amenities?.slice(0, 3).map(am => (
                                  <span key={am} className="text-[9px] font-bold text-gray-400 border border-gray-100 px-3 py-1 rounded-lg uppercase tracking-widest">{am}</span>
                                ))}
+                               {prop.amenities?.length > 3 && (
+                                 <span className="text-[9px] font-bold text-gray-400 border border-gray-100 bg-gray-50 px-3 py-1 rounded-lg uppercase tracking-widest">
+                                   +{prop.amenities.length - 3} more
+                                 </span>
+                               )}
                             </div>
 
                             <div className="flex items-center justify-between pt-8 border-t border-gray-100">
@@ -262,7 +283,15 @@ const SearchResults = () => {
                       <XMarkIcon className="w-6 h-6" />
                    </button>
                 </div>
-                <FilterContent isMobile={true} />
+                <FilterContent 
+                  isMobile={true} 
+                  priceInputs={priceInputs} 
+                  setPriceInputs={setPriceInputs} 
+                  selectedAmenities={selectedAmenities} 
+                  setSelectedAmenities={setSelectedAmenities} 
+                  setAppliedFilters={setAppliedFilters} 
+                  setShowMobileFilters={setShowMobileFilters} 
+                />
              </motion.div>
           </div>
         )}

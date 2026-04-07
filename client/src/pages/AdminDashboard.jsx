@@ -15,6 +15,7 @@ import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import useAuthStore from '../stores/authStore';
 import { propertyAPI, bookingAPI, uploadAPI } from '../utils/api';
+import HeicImage from '../components/HeicImage';
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -846,7 +847,7 @@ const AdminDashboard = () => {
                    <input type="email" placeholder="Owner Email" value={newProperty.ownerEmail} onChange={(e) => setNewProperty({...newProperty, ownerEmail: e.target.value})} className="w-full px-3 py-2 border rounded-lg text-sm" />
                 </div>
                 <div className="flex items-center gap-4">
-                  {newProperty.ownerImage && <img src={newProperty.ownerImage} className="w-10 h-10 rounded-full object-cover border" alt="Owner" />}
+                  {newProperty.ownerImage && <HeicImage src={newProperty.ownerImage} className="w-10 h-10 rounded-full object-cover border" alt="Owner" />}
                   <input type="file" onChange={(e) => handleOwnerImageUpload(e)} accept="image/*" className="text-xs" />
                 </div>
               </div>
@@ -885,7 +886,7 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-4 gap-2 mt-3">
                     {newProperty.images.map((img, index) => (
                       <div key={index} className="relative group">
-                        <img src={img} alt={`Preview ${index + 1}`} className="w-full h-16 object-cover rounded-lg" />
+                        <HeicImage src={img} alt={`Preview ${index + 1}`} className="w-full h-16 object-cover rounded-lg" />
                         <button
                           type="button"
                           onClick={() => removeImage(index)}
@@ -957,7 +958,7 @@ const AdminDashboard = () => {
                   <input type="email" placeholder="Owner Email" value={editingProperty.ownerEmail} onChange={(e) => setEditingProperty({...editingProperty, ownerEmail: e.target.value})} className="w-full px-3 py-2 border rounded-lg text-sm" />
                 </div>
                 <div className="flex items-center gap-4">
-                  {editingProperty.ownerImage && <img src={editingProperty.ownerImage} className="w-10 h-10 rounded-full object-cover border" alt="Owner" />}
+                  {editingProperty.ownerImage && <HeicImage src={editingProperty.ownerImage} className="w-10 h-10 rounded-full object-cover border" alt="Owner" />}
                   <input type="file" onChange={(e) => handleOwnerImageUpload(e, true)} accept="image/*" className="text-xs" />
                 </div>
               </div>
@@ -995,7 +996,7 @@ const AdminDashboard = () => {
                   <div className="grid grid-cols-4 gap-2 mt-3">
                     {editingProperty.images.map((img, index) => (
                       <div key={index} className="relative group">
-                        <img src={img} alt={`Preview ${index + 1}`} className="w-full h-16 object-cover rounded-lg" />
+                        <HeicImage src={img} alt={`Preview ${index + 1}`} className="w-full h-16 object-cover rounded-lg" />
                         <button
                           type="button"
                           onClick={() => removeEditImage(index)}

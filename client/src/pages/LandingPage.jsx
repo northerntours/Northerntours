@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
 import useSearchStore from '../stores/searchStore';
 import { propertyAPI } from '../utils/api';
+import HeicImage from '../components/HeicImage';
 
 const LandingPage = () => {
   const navigate = useNavigate();
@@ -111,20 +112,20 @@ const LandingPage = () => {
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="mb-12"
+            className="mb-12 md:mt-12"
           >
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white mb-8">
               <SparklesIcon className="w-4 h-4 text-primary-400" />
               <span className="text-xs md:text-sm font-bold tracking-widest uppercase">The North is Calling</span>
             </div>
             
-            <h1 className="text-3xl sm:text-4xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter leading-[0.8] mb-8">
+            <h1 className="text-4xl sm:text-5xl md:text-7xl lg:text-9xl font-black text-white tracking-tighter leading-none md:leading-[0.8] mb-6 md:mb-8 md:line-height-[1.8]">
               UNFORGETTABLE<br />
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-blue-300 uppercase italic">Home Stays</span>
             </h1>
             
-            <div className="max-w-xl mx-auto">
-              <p className="text-gray-300 text-lg md:text-xl font-medium leading-relaxed">
+            <div className="max-w-xl mx-auto px-4 md:px-0">
+              <p className="text-gray-300 text-base md:text-xl font-medium leading-normal md:leading-relaxed">
                 Experience the authentic heartbeat of the mountains. Vetted properties, local hosts, and memories that last a lifetime.
               </p>
             </div>
@@ -270,7 +271,7 @@ const LandingPage = () => {
                 >
                   <div className="bg-white rounded-[40px] p-4 shadow-md md:shadow-lg shadow-gray-200/50 hover:shadow-2xl hover:shadow-primary-500/10 transition-all duration-500 border border-gray-50 h-full flex flex-col hover:-translate-y-2">
                     <div className="relative h-64 md:h-72 overflow-hidden rounded-[32px] mb-6">
-                      <img src={prop.images?.[0] || ''} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={prop.title} />
+                      <HeicImage src={prop.images?.[0] || ''} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={prop.title} />
                       <div className="absolute top-4 left-4 bg-white/90 backdrop-blur-md px-4 py-2 rounded-2xl shadow-sm">
                         <p className="text-xs font-black text-gray-900">₹{prop.price?.toLocaleString('en-IN')}<span className="text-gray-400 font-bold">/night</span></p>
                       </div>
@@ -349,7 +350,7 @@ const LandingPage = () => {
       </section>
 
       {/* ===== STATS BAR ===== */}
-      <section className="pb-24">
+      {/* <section className="pb-24">
         <div className="max-w-7xl mx-auto px-4">
            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
@@ -365,10 +366,10 @@ const LandingPage = () => {
               ))}
            </div>
         </div>
-      </section>
+      </section> */}
 
       {/* ===== MISSION CALLOUT ===== */}
-      <section className="py-24 md:py-48 relative overflow-hidden">
+      <section className="py-12 md:py-24 relative overflow-hidden">
          <div className="max-w-4xl mx-auto px-4 text-center">
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}

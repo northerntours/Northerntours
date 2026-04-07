@@ -1,195 +1,126 @@
-# Premium HomeStay Booking Marketplace
+# Northern Tours - Premium Homestay Booking Platform
 
-A modern, full-stack HomeStay booking application built with the MERN stack (MongoDB, Express.js, React, Node.js).
+Northern Tours is a modern, full-stack Homestay/Offbeat destination booking application designed to showcase the authentic heartbeat of the mountains. Built with the MERN stack (MongoDB, Express.js, React, Node.js), it provides a seamless and visually stunning experience for travelers searching for unique stays in North India.
 
-## Features
+## 🏔️ Project Overview
 
-### Frontend (React + Vite)
-- **Landing Page**: Hero section with glassmorphism search bar
-- **Search Functionality**: Filter properties by location, dates, and guests
-- **Property Listings**: Grid view with filtering options
-- **Property Details**: Image gallery, description, amenities, and booking sidebar
-- **Authentication**: Login/Signup modal with JWT persistence
-- **Admin Dashboard**: Sales charts, property management, and booking overview
-- **Responsive Design**: Mobile-first approach with Tailwind CSS
-- **Smooth Animations**: Framer Motion for page transitions and interactions
+Northern Tours connects guests with vetted properties and local hosts, focusing on the beauty of Kalimpong, Nimbong, and beyond. The platform features a premium user interface with interactive elements, direct host communication, and a robust administrative dashboard.
 
-### Backend (Node.js + Express)
-- **RESTful API**: Complete CRUD operations for properties and bookings
-- **User Authentication**: JWT-based authentication with role-based access
-- **Booking System**: Date availability checking and booking management
-- **Data Validation**: Input validation and error handling
-- **MongoDB Integration**: Mongoose schemas for Users, Properties, and Bookings
+## ✨ Core Features
 
-## Tech Stack
+### 💎 Frontend (React + Vite)
+- **High-End Landing Page**: Features a glassmorphic search hub and smooth scroll animations.
+- **Dynamic Search**: Instantly find properties by destination, stay duration, and guest count.
+- **Inquiry-Based Booking**: A streamlined "Book Now" flow where users send inquiries directly to the platform.
+- **Direct Host Connectivity**: Quick-access "WhatsApp" and "Call" buttons to reach hosts (+91 logic included).
+- **Interactive Details**: Premium image galleries, detailed descriptions, and localized amenity tracking.
+- **Responsive Mastery**: Fully optimized for mobile, tablet, and desktop viewports.
+- **Elegant Animations**: Powered by Framer Motion for a fluid, luxurious feel.
 
-### Frontend
-- **React 18** with Vite
-- **Tailwind CSS** for styling
-- **Framer Motion** for animations
-- **Zustand** for state management
-- **React Router** for navigation
-- **React Day Picker** for date selection
-- **Heroicons** for icons
-- **Recharts** for data visualization
+### 🛠️ Backend (Node.js + Express)
+- **Robust REST API**: Comprehensive endpoints for property discovery, simplified inquiries, and administrative oversight.
+- **JWT Authentication**: Secure user and admin login with role-based access control (RBAC).
+- **MERN Architecture**: Clean separation of concerns with Mongoose schemas for Users, Properties, and Bookings.
+- **Seeding Support**: Built-in script to quickly populate the database with real-world mountain properties.
 
-### Backend
-- **Node.js** with Express.js
-- **MongoDB** with Mongoose ODM
-- **JWT** for authentication
-- **Bcrypt.js** for password hashing
-- **Cors** for cross-origin requests
-- **Dotenv** for environment variables
+### 🛡️ Administrative Dashboard
+- **Analytics Overview**: Real-time revenue charts and inventory tracking.
+- **Inventory Management**: Create, edit, and delete properties with a rich amenity list (Kanchanjunga View, Bonfire, Barbeque, etc.).
+- **Booking Management**: View and update the status of guest inquiries (Pending, Confirmed, Cancelled).
+- **Master Admin Access**: Centralized control via a dedicated admin account.
 
-## Project Structure
+## 🛠️ Tech Stack
 
-```
-Homestay/
-├── client/                 # React frontend
-│   ├── src/
-│   │   ├── components/    # Reusable components
-│   │   ├── pages/         # Page components
-│   │   ├── stores/        # Zustand stores
-│   │   ├── hooks/         # Custom hooks
-│   │   └── utils/         # Utility functions
-│   └── ...
-├── server/                # Node.js backend
-│   ├── controllers/       # Request handlers
-│   ├── models/           # Mongoose models
-│   ├── routes/           # API routes
-│   ├── middleware/       # Custom middleware
-│   ├── config/           # Configuration files
-│   └── ...
-└── README.md
-```
+- **Frontend**: React 18, Vite, Tailwind CSS, Framer Motion, Zustand, React Day Picker, Heroicons, Recharts.
+- **Backend**: Node.js, Express.js, MongoDB (Atlas/Local), JWT, Bcrypt.js, Cloudinary (Image management).
 
-## Getting Started
+---
 
-### Prerequisites
-- Node.js (v16 or higher)
-- MongoDB (local or cloud instance)
-- npm or yarn
+## 🚀 Getting Started (Local Setup)
 
-### Installation
+Follow these steps to run Northern Tours on your local machine.
 
-1. **Clone the repository**
+### 1. Prerequisites
+- **Node.js** (v16.x or higher)
+- **npm** or **yarn**
+- **MongoDB** (Local instance or MongoDB Atlas cluster)
+
+### 2. Installation
+Clone the repository and install dependencies for both systems.
+
 ```bash
-git clone <repository-url>
+# Clone the repository
+git clone <your-repository-url>
 cd Homestay
-```
 
-2. **Install frontend dependencies**
-```bash
+# Install Client dependencies
 cd client
 npm install
-```
 
-3. **Install backend dependencies**
-```bash
+# Install Server dependencies
 cd ../server
 npm install
 ```
 
-4. **Environment Setup**
-Create a `.env` file in the `server` directory:
+### 3. Environment Configuration
+Create a `.env` file in the `server` directory with the following variables:
+
 ```env
 NODE_ENV=development
 PORT=5000
-MONGODB_URI=mongodb://localhost:27017/homestay
-JWT_SECRET=your_jwt_secret_key_here
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_secure_random_string
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
 ```
 
-5. **Start MongoDB**
-Make sure MongoDB is running on your system.
+Create a `.env` file in the `client` directory:
+```env
+VITE_API_URL=http://localhost:5000/api
+```
 
-6. **Run the applications**
+### 4. Database Seeding
+To populate the application with initial data (Admin account and sample properties):
 
-In one terminal, start the backend:
+```bash
+cd server
+npm run seed
+```
+*This will create the master admin: `admin@northerntours.com` / `Admin@123`*
+
+### 5. Running the Application
+Open two terminals to run the frontend and backend simultaneously.
+
+**Terminal 1 (Backend):**
 ```bash
 cd server
 npm run dev
 ```
 
-In another terminal, start the frontend:
+**Terminal 2 (Frontend):**
 ```bash
 cd client
 npm run dev
 ```
 
-The application will be available at:
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:5000
+The application will be live at `http://localhost:5173`.
 
-## API Endpoints
+---
 
-### Authentication
-- `POST /api/auth/register` - Register new user
-- `POST /api/auth/login` - Login user
-- `GET /api/auth/profile` - Get user profile
+## 📍 Headquarters
+**Office Address**: Nimbong, Kalimpong, 734301, West Bengal.
+
+## 🗝️ API Endpoints
+
+### Auth
+- `POST /api/auth/register` - New user sign-up
+- `POST /api/auth/login` - Secure login
 
 ### Properties
-- `GET /api/properties` - Get all properties (with filters)
-- `GET /api/properties/:id` - Get single property
-- `POST /api/properties` - Create new property (Admin)
-- `PUT /api/properties/:id` - Update property (Owner/Admin)
-- `DELETE /api/properties/:id` - Delete property (Owner/Admin)
-- `GET /api/properties/:id/availability` - Get property availability
+- `GET /api/properties` - List properties with dynamic filters (location, price, amenities)
+- `POST /api/properties` - Create new listing (Admin only)
 
-### Bookings
-- `POST /api/bookings` - Create new booking
-- `GET /api/bookings/my-bookings` - Get user's bookings
-- `GET /api/bookings` - Get all bookings (Admin)
-- `PUT /api/bookings/:id/status` - Update booking status (Admin)
-- `PUT /api/bookings/:id/cancel` - Cancel booking
-
-## Key Features Implemented
-
-### 1. Search & Discovery
-- Location-based search
-- Date range selection with availability checking
-- Guest count filtering
-- Price range and amenities filters
-
-### 2. Booking System
-- Real-time date availability checking
-- Automatic date blocking after booking
-- Price calculation based on nightly rates
-- Booking status management
-
-### 3. Authentication & Authorization
-- User registration and login
-- JWT token-based authentication
-- Role-based access control (Guest/Admin)
-- Protected routes and actions
-
-### 4. Admin Functionality
-- Property management (CRUD operations)
-- Booking overview and management
-- Revenue analytics and reporting
-- User management capabilities
-
-### 5. User Experience
-- Responsive design for all devices
-- Smooth animations and transitions
-- Loading states and skeleton screens
-- Intuitive navigation and user flows
-
-## Future Enhancements
-
-- Payment integration (Stripe/PayPal)
-- Image upload functionality
-- Advanced search filters
-- User reviews and ratings
-- Messaging system between guests and hosts
-- Mobile app development
-- Email notifications
-- Social media integration
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-# Northerntours
+### Bookings/Inquiries
+- `POST /api/bookings` - Submit a new inquiry
+- `GET /api/bookings` - Manage all inquiries (Admin only)

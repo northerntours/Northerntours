@@ -24,6 +24,7 @@ import {
 import { DayPicker } from 'react-day-picker';
 import 'react-day-picker/dist/style.css';
 import { propertyAPI, bookingAPI } from '../utils/api';
+import HeicImage from '../components/HeicImage';
 
 const PropertyDetail = () => {
   const { id } = useParams();
@@ -109,7 +110,7 @@ const PropertyDetail = () => {
         <section className="mb-10 group/gallery">
           <div className="grid grid-cols-1 md:grid-cols-4 md:grid-rows-2 gap-3 h-[300px] sm:h-[400px] md:h-[450px]">
              <div className="md:col-span-2 md:row-span-2 relative rounded-2xl md:rounded-3xl overflow-hidden border border-gray-100 cursor-pointer shadow-sm group" onClick={() => { setLightboxIndex(0); setLightboxOpen(true); }}>
-                <img src={property.images[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Main Exterior" />
+                <HeicImage src={property.images[0]} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" alt="Main Exterior" />
                 
                 {/* GALLERY NAVIGATION ARROWS */}
                 <button 
@@ -133,7 +134,7 @@ const PropertyDetail = () => {
                   className="hidden md:block relative rounded-2xl overflow-hidden border border-gray-100 cursor-pointer shadow-sm group"
                   onClick={() => { setLightboxIndex(idx + 1); setLightboxOpen(true); }}
                 >
-                  <img src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={`View ${idx + 1}`} />
+                  <HeicImage src={img} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" alt={`View ${idx + 1}`} />
                   {idx === 3 && property.images.length > 5 && (
                     <div className="absolute inset-0 bg-black/60 flex items-center justify-center text-white text-xl font-bold">
                        +{property.images.length - 5}
@@ -147,7 +148,7 @@ const PropertyDetail = () => {
           <div className="flex md:hidden gap-3 mt-4 overflow-x-auto pb-2 scrollbar-hide">
              {property.images.slice(1).map((img, idx) => (
                 <div key={idx} className="flex-shrink-0 w-24 h-20 rounded-xl overflow-hidden border border-gray-100 shadow-sm" onClick={() => { setLightboxIndex(idx + 1); setLightboxOpen(true); }}>
-                   <img src={img} className="w-full h-full object-cover hover:scale-105 transition-transform" alt={`Thumb ${idx}`} />
+                   <HeicImage src={img} className="w-full h-full object-cover hover:scale-105 transition-transform" alt={`Thumb ${idx}`} />
                 </div>
              ))}
           </div>
@@ -198,7 +199,7 @@ const PropertyDetail = () => {
              {/* Host Informantion */}
              <div className="bg-white rounded-3xl p-6 flex flex-col md:flex-row items-center gap-6 border border-gray-50 shadow-xl shadow-gray-100/50 hover:shadow-2xl transition-all duration-500">
                 <div className="w-16 h-16 rounded-full overflow-hidden border-2 border-gray-100 flex-shrink-0">
-                  <img src={`${property.ownerImage || 'https://ui-avatars.com/api/?name=${property.ownerName}&background=4f46e5&color=fff&bold=true'}`} alt="Host" className="w-full h-full object-cover" />
+                  <HeicImage src={property.ownerImage || `https://ui-avatars.com/api/?name=${property.ownerName}&background=4f46e5&color=fff&bold=true`} alt="Host" className="w-full h-full object-cover" />
                 </div>
                 <div className="text-center md:text-left flex-1">
                   <h4 className="text-lg font-bold text-gray-950 mb-0.5">{property.ownerName || 'Verified Host'}</h4>
@@ -394,15 +395,16 @@ const PropertyDetail = () => {
                <ChevronLeftIcon className="w-12 h-12 stroke-[2px]" />
              </button>
 
-             <motion.img 
-              key={lightboxIndex} 
-              initial={{ opacity: 0, scale: 0.9, y: 20 }} 
-              animate={{ opacity: 1, scale: 1, y: 0 }} 
+             <motion.div
+              key={lightboxIndex}
+              initial={{ opacity: 0, scale: 0.9, y: 20 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 1.05 }}
-              src={property.images[lightboxIndex]} 
-              className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-2xl border border-white/10"
-              onClick={(e) => e.stopPropagation()} 
-             />
+              onClick={(e) => e.stopPropagation()}
+              className="max-w-[90vw] max-h-[85vh] rounded-xl shadow-2xl border border-white/10 overflow-hidden"
+             >
+               <HeicImage src={property.images[lightboxIndex]} className="w-full h-full object-contain" />
+             </motion.div>
 
              <button 
               onClick={(e) => { e.stopPropagation(); setLightboxIndex((lightboxIndex + 1) % property.images.length); }} 
