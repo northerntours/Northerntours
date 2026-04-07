@@ -146,14 +146,14 @@ const Footer = () => {
             </span>
             <span className="hidden md:block w-1 h-1 rounded-full bg-primary-500 shadow-[0_0_8px_rgba(14,165,233,0.8)]"></span>
             <div className="flex items-center gap-3 text-gray-500 text-[10px] uppercase font-bold tracking-[0.2em]">
-               <span>Architected by</span>
+               <span>Developed & Designed by</span>
                <a 
                 href="https://shivsagar.tech" 
                 target="_blank" 
                 rel="noopener noreferrer" 
                 className="relative group flex items-center gap-2 px-5 py-2.5 bg-white/5 hover:bg-white/10 border border-white/10 hover:border-primary-500/50 rounded-full transition-all duration-500 overflow-hidden shadow-lg hover:shadow-primary-500/20"
                >
-                 <span className="relative z-10 text-white font-black tracking-[0.25em] group-hover:text-primary-400 drop-shadow-md transition-colors">SHIV SAGAR</span>
+                 <span className="relative z-10 text-white font-black tracking-[0.25em] group-hover:text-primary-400 drop-shadow-md transition-colors ">SHIV SAGAR</span>
                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary-500/20 to-transparent -translate-x-[150%] group-hover:translate-x-[150%] transition-transform duration-1000 ease-in-out"></div>
                </a>
             </div>
