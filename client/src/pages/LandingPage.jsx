@@ -150,8 +150,8 @@ const LandingPage = () => {
                       type="text" 
                       value={localLocation}
                       onChange={(e) => setLocalLocation(e.target.value)}
-                      placeholder="e.g. Kalimpong, Nimbong" 
-                      className="bg-transparent border-none p-0 w-full focus:ring-0 focus:outline-none text-gray-900 font-bold placeholder:text-gray-300"
+                      placeholder="eg. Kalimpong" 
+                      className="bg-transparent border-none p-0 w-full focus:ring-0 focus:outline-none text-gray-900 font-bold placeholder:text-gray-400"
                     />
                   </div>
                 </div>
